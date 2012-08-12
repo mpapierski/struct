@@ -21,6 +21,7 @@
 #define MATCH_TYPE_s char
 #define MATCH_TYPE_I unsigned int
 #define MATCH_TYPE_i int
+#define MATCH_TYPE_BOOL bool
 
 // map types to ids and aliases
 #define TYPE_s 0
@@ -34,6 +35,9 @@
 #define TYPE_i 2
 #define TYPE_INT TYPE_i
 #define MATCH_TYPE_2 MATCH_TYPE_i
+
+#define TYPE_BOOL 3
+#define MATCH_TYPE_3 MATCH_TYPE_BOOL
 
 // todo:
 // separate macros to:
@@ -243,6 +247,13 @@
 			char* result = buffer;                                             \
 			DEFINE_WRITER(expanded_data_types);                                \
 			return buffer;                                                     \
+		}                                                                      \
+		inline void pack_to(                                                   \
+			char* result,                                                      \
+			DEFINE_WRITER_PARAMS(expanded_data_types)                          \
+		) const                                                                \
+		{                                                                      \
+			DEFINE_WRITER(expanded_data_types);                                \
 		}                                                                      \
 		enum { size = DEFINE_CALCSIZE(data_types) };                           \
 	};
