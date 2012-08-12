@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE( test_read )
 
 //____________________________________________________________________________//
 
-BOOST_AUTO_TEST_CASE (test_write )
+BOOST_AUTO_TEST_CASE ( test_write_and_read )
 {
 	simple s;
 	char * result = s.pack(
@@ -85,6 +85,35 @@ BOOST_AUTO_TEST_CASE (test_write )
 		"12345678901234567890",
 		0xfbadc0d3
 	);
+	
 	BOOST_CHECK(!!result);
+	
+	char * p = result;
+	
+	BOOST_CHECK(*reinterpret_cast<unsigned int*>(p) == 0xdeadbeef);
+	p += sizeof(unsigned int);
+	
+	BOOST_CHECK(*reinterpret_cast<unsigned int*>(p) == 0x99887766);
+	p += sizeof(unsigned int);
+	
+	BOOST_CHECK(strncmp(p, "Hello world!", 20) == 0);
+	p += 20;
+	
+	BOOST_CHECK(strncmp(p, "12345678901234567890", 20) == 0);
+	p += 20;
+	
+	unsigned int a, b;
+	char* c, *d;
+	unsigned int e;
+	
+	simple s2;
+	tie(a, b, c, d, e) = s2.unpack(result);
+	
+	BOOST_CHECK(a == 0xdeadbeef);
+	BOOST_CHECK(b == 0x99887766);
+	BOOST_CHECK(strncmp(c, "Hello world!", 20) == 0);
+	BOOST_CHECK(strncmp(d, "12345678901234567890", 20) == 0);
+	BOOST_CHECK(e == 0xfbadc0d3);
+	
 	delete[] result;
 }
