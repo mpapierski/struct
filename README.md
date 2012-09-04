@@ -1,4 +1,4 @@
-# struct
+# struct [![Build Status](https://secure.travis-ci.org/mpapierski/struct.png)](http://travis-ci.org/mpapierski/struct)
 
 Python struct module implemented in C++.
 
